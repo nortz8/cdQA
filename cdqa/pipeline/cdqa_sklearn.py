@@ -223,14 +223,13 @@ class QAPipeline(BaseEstimator):
             self.cuda()
 
     @staticmethod
-    def _expand_paragraphs(df):
-        # Snippet taken from: https://stackoverflow.com/a/48532692/11514226
-        lst_col = "paragraphs"
-        df = pd.DataFrame(
-            {
-                col: np.repeat(df[col].values, df[lst_col].str.len())
-                for col in df.columns.drop(lst_col)
-            }
-        ).assign(**{lst_col: np.concatenate(df[lst_col].values)})[df.columns]
-        df["content"] = df["paragraphs"]
-        return df.drop("paragraphs", axis=1)
+    def _expand_paragraphs(df): 
+         data=[]
+         for n in range(len(df)):  
+             stringlist = df.iloc[n][1]  
+             for m in range(len(stringlist)): 
+                 a=df.iloc[n][0] 
+                 b=stringlist[m] 
+                 data.append({'title' : a, 'content' : b}) 
+         dfx = pd.DataFrame(data) 
+         return dfx
